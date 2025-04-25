@@ -13,7 +13,6 @@ import java.util.PriorityQueue;
 @Service
 public class FileService {
 
-    // Явное создание логгера
     private static final Logger log = LoggerFactory.getLogger(FileService.class);
 
     public Integer findNthMinNumber(String filePath, int n) throws IOException {
@@ -29,7 +28,7 @@ public class FileService {
                     int number = (int) cell.getNumericCellValue();
                     if (maxHeap.size() < n) {
                         maxHeap.offer(number);
-                    } else if (number < maxHeap.peek()) {
+                    } else if (!maxHeap.isEmpty() && number < maxHeap.peek()) {
                         maxHeap.poll();
                         maxHeap.offer(number);
                     }

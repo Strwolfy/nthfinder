@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-// import io.springfox.documentation.annotations.ApiIgnore; // удалите такие импорты
-
 @RestController
 @RequestMapping("/api")
 @Tag(name = "XLSX File Processing", description = "API for finding N-th minimal number in XLSX files")
@@ -29,7 +26,7 @@ public class FileController {
     @PostMapping("/find-nth-min")
     @Operation(summary = "Find N-th minimal number in XLSX file",
             description = "Returns N-th smallest number from the first column of XLSX")
-    public ResponseEntity<Integer> findNthMin(
+    public ResponseEntity<?> findNthMin(
             @RequestParam
             @Parameter(description = "Absolute path to XLSX file", example = "/home/user/numbers.xlsx", required = true)
             String filePath,
@@ -40,8 +37,8 @@ public class FileController {
         try {
             Integer result = fileService.findNthMinNumber(filePath, n);
             return ResponseEntity.ok(result);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
 }
